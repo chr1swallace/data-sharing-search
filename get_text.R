@@ -2,7 +2,7 @@ library(data.table)
 
 if(!file.exists("data"))
   system("mkdir ~/scratch/carrots_files && ln -s ~/scratch/carrots_files data")
-file="~/rds/rds-cew54-basis/Projects/gwas-sharing/data/Nonsharers_2017.tsv"
+file="~/rds/rds-cew54-basis/Projects/gwas-sharing/data/Nonsharers_all.tsv"
 data=fread(file)
 data[,xml:=paste0("https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_xml/",PMID,"/unicode")]
 data[,outfile:=paste0(PMID,".xml")]
@@ -14,7 +14,7 @@ for(i in 1:nrow(data)) {
 }
 
 ## how many files successful?
-files_found=list.files("data",full=TRUE)
+files_found=list.files("data",full=TRUE,pattern=".xml$")
 info=file.info(files_found)
 sizes=file.info(files_found)$size
 hist(log(sizes+1),breaks=1000)

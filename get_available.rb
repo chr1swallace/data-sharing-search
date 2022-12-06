@@ -117,7 +117,7 @@ while l= f.gets do
   dbgap_analyses.push(m[0]) if l2 =~ /directory-content/ # keep if it has some content
 end
 
-files.each do |f|
+(files - manual_shared_files).each do |f|
   toprint=[]
   ## Parse with a file name (path)
   collection = SimpleBioC::from_xml(f)
