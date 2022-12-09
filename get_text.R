@@ -7,10 +7,12 @@ data=fread(file)
 data[,xml:=paste0("https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_xml/",PMID,"/unicode")]
 data[,outfile:=paste0(PMID,".xml")]
 data[,cmd:=paste0("cd data && wget -nc ",xml," -O ",outfile)]
+files_found=list.files("data",full=FALSE,pattern=".xml$")
+data[,downloaded:=outfile %in% files_found]
+table(data$downloaded)
 
-for(i in 1:nrow(data)) {
-  if(!file.exists(data$outfile[i]))
-    system(data$cmd[i])
+for(i in which(!data$downloaded)) {
+  system(data$cmd[i])
 }
 
 ## how many files successful?
